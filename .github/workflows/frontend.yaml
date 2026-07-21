@@ -14,19 +14,23 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v5
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    # Sync website files directly to S3
+    # 1. Sync website files to S3
     - name: Sync S3 Bucket
       run: |
-        aws s3 sync ./frontend s3://nitincloud.co.uk --delete
+        aws s3 sync ./ s3://nitincloud.co.uk --exclude ".git/*" --exclude ".github/*" --exclude "terraform/*" --exclude "lambda/*" --delete
 
-    # Invalidate CloudFront cache so updates reflect instantly online
+    # 2. Invalidate CloudFront Cache
     - name: Invalidate CloudFront Cache
       run: |
-        DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?contains(@, 'nitincloud.co.uk')]].Id" --output text)
-        aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
+        DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items && contains(Aliases.Items, 'nitincloud.co.uk')].Id | [0]" --output text)
+        if [ "$DIST_ID" != "None" ] && [ -n "$DIST_ID" ]; then
+          aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"
+        else
+          echo "No CloudFront distribution found for nitincloud.co.uk, skipping invalidation."
+        fi
