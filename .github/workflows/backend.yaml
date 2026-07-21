@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   test-and-deploy:
@@ -43,10 +44,27 @@ jobs:
       with:
         terraform_wrapper: false
 
-    # 6. Deploy Infrastructure via Terraform
-    - name: Terraform Init & Apply
-      run: |
-        terraform init
-        terraform plan
-        terraform apply -auto-approve
+    # 6. Initialize Terraform (Forces S3 backend sync)
+    - name: Terraform Init
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: eu-north-1
+      run: terraform init -reconfigure -input=false
+
+    # 7. Terraform Plan
+    - name: Terraform Plan
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: eu-north-1
+      run: terraform plan -input=false
+
+    # 8. Terraform Apply
+    - name: Terraform Apply
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: eu-north-1
+      run: terraform apply -auto-approve -input=false
         
