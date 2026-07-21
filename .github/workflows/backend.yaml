@@ -46,6 +46,7 @@ jobs:
     # 6. Deploy Infrastructure via Terraform
     - name: Terraform Init & Apply
       run: |
-        terraform init -reconfigure
+        terraform init
         terraform plan
+        terraform apply -auto-approve
         

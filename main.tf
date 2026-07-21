@@ -60,19 +60,19 @@ resource "aws_s3_bucket_policy" "allow_public_access" {
 
 }
 
-#resource "aws_s3_object" "upload_index" {
-#  bucket       = aws_s3_bucket.my_first_bucket.id
-#  source       = "${path.module}/website/index.html"
-#  key          = "index.html"
-#  content_type = "text/html"
-#}
+resource "aws_s3_object" "upload_index" {
+  bucket       = aws_s3_bucket.my_first_bucket.id
+  source       = "${path.module}/website/index.html"
+  key          = "index.html"
+  content_type = "text/html"
+}
 
-#resource "aws_s3_object" "style" {
-#  bucket       = aws_s3_bucket.my_first_bucket.id
-#  key          = "style.css"
-#  source       = "${path.module}/website/style.css"
-#  content_type = "text/css"
-#}
+resource "aws_s3_object" "style" {
+  bucket       = aws_s3_bucket.my_first_bucket.id
+  key          = "style.css"
+  source       = "${path.module}/website/style.css"
+  content_type = "text/css"
+}
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
@@ -139,15 +139,14 @@ resource "aws_acm_certificate" "cert" {
 
 }
 
-/*resource "aws_route53_record" "cert_validation" {
+resource "aws_route53_record" "cert_validation" {
   for_each = {
     for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
     }
-  
-
+  }
   allow_overwrite = true
   name            = each.value.name
   records         = [each.value.record]
@@ -155,14 +154,14 @@ resource "aws_acm_certificate" "cert" {
   type            = each.value.type
   zone_id         = aws_route53_zone.primary.zone_id
 
-}*/
+}
 
-/*resource "aws_acm_certificate_validation" "cert" {
+resource "aws_acm_certificate_validation" "cert" {
   provider                = aws.us-east-1
   certificate_arn         = aws_acm_certificate.cert.arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 
-}*/
+}
 
 resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.primary.zone_id
@@ -174,7 +173,6 @@ resource "aws_route53_record" "www" {
     zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
     evaluate_target_health = false
   }
-
 
 }
 
