@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'backend/**'   # <-- ONLY run if files in the 'backend' folder or terraform change!
+      - 'terraform/**' 
   workflow_dispatch:
 
 jobs:
