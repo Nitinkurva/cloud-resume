@@ -22,6 +22,8 @@ jobs:
 
     # 3. Install dependencies & Run Unit Tests
     - name: Run Python Unit Tests
+      env:
+        AWS_DEFAULT_REGION: us-east-1
       run: |
         pip install boto3
         cd lambda
