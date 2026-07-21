@@ -23,7 +23,7 @@ jobs:
     # 3. Install dependencies & Run Unit Tests
     - name: Run Python Unit Tests
       env:
-        AWS_DEFAULT_REGION: us-east-1
+        AWS_DEFAULT_REGION: eu-north-1
       run: |
         pip install boto3
         cd lambda
@@ -35,7 +35,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+        aws-region: eu-north-1
 
     # 5. Set up Terraform
     - name: Setup Terraform
@@ -44,6 +44,5 @@ jobs:
     # 6. Deploy Infrastructure via Terraform
     - name: Terraform Init & Apply
       run: |
-        cd .
-        terraform init
+        terraform init -reconfigure
         terraform apply -auto-approve
