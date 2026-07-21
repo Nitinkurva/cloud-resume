@@ -60,19 +60,19 @@ resource "aws_s3_bucket_policy" "allow_public_access" {
 
 }
 
-resource "aws_s3_object" "upload_index" {
-  bucket       = aws_s3_bucket.my_first_bucket.id
-  source       = "${path.module}/website/index.html"
-  key          = "index.html"
-  content_type = "text/html"
-}
+#resource "aws_s3_object" "upload_index" {
+#  bucket       = aws_s3_bucket.my_first_bucket.id
+#  source       = "${path.module}/website/index.html"
+#  key          = "index.html"
+#  content_type = "text/html"
+#}
 
-resource "aws_s3_object" "style" {
-  bucket       = aws_s3_bucket.my_first_bucket.id
-  key          = "style.css"
-  source       = "${path.module}/website/style.css"
-  content_type = "text/css"
-}
+#resource "aws_s3_object" "style" {
+#  bucket       = aws_s3_bucket.my_first_bucket.id
+#  key          = "style.css"
+#  source       = "${path.module}/website/style.css"
+#  content_type = "text/css"
+#}
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
