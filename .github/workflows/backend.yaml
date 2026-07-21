@@ -24,6 +24,7 @@ jobs:
     - name: Run Python Unit Tests
       run: |
         pip install boto3
+        cd lambda
         python -m unittest lambda/test_lambda.py
 
     # 4. Configure AWS Credentials from GitHub Secrets

@@ -23,7 +23,7 @@ jobs:
     # 1. Sync website files to S3
     - name: Sync S3 Bucket
       run: |
-        aws s3 sync ./ s3://nitincloud.co.uk --exclude ".git/*" --exclude ".github/*" --exclude "terraform/*" --exclude "lambda/*" --delete
+        aws s3 sync ./ s3://nitin-cloud-resume-bucket-2026 --exclude ".git/*" --exclude ".github/*" --exclude "terraform/*" --exclude "lambda/*" --delete
 
     # 2. Invalidate CloudFront Cache
     - name: Invalidate CloudFront Cache
