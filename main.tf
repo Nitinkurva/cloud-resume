@@ -243,7 +243,6 @@ resource "aws_lambda_function" "visitor_counter_lambda" {
   lifecycle {
     ignore_changes = [
       source_code_hash,
-      last_modified,
     ]
   }
 }
