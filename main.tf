@@ -1,3 +1,18 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.0"
+    }
+  }
+
+  backend "s3" {
+    bucket = "nitin-cloud-resume-bucket-2026"
+    key    = "terraform/state.tfstate"
+    region = "eu-north-1"
+  }
+}
+
 provider "aws" {
   region = "eu-north-1"
 }
