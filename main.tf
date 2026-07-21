@@ -238,8 +238,14 @@ resource "aws_lambda_function" "visitor_counter_lambda" {
   function_name    = "visitor-counter-function"
   role             = aws_iam_role.lambda_role.arn
   handler          = "lambda_function.lambda_handler" # Looks for lambda_function.py -> lambda_handler function
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   runtime          = "python3.11"
+
+  lifecycle {
+    ignore_changes = [
+      source_code_hash,
+      last_modified,
+    ]
+  }
 }
 
 resource "aws_apigatewayv2_api" "lambda_api" {
