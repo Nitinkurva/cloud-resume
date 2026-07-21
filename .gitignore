@@ -1,7 +1,11 @@
-# Ignore Terraform state files & downloaded binaries
-.terraform/
+# Ignore all Terraform state files & backups
 *.tfstate
-*.tfstate.backup
+*.tfstate.*
+*.tfstate.backup*
+terraform.tfstate.backup.json
+
+# Ignore local terraform working directory
+.terraform/
 
 # Ignore Python cached files
 __pycache__/
