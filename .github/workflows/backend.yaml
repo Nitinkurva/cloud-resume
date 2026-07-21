@@ -40,6 +40,8 @@ jobs:
     # 5. Set up Terraform
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_wrapper: false
 
     # 6. Deploy Infrastructure via Terraform
     - name: Terraform Init & Apply
