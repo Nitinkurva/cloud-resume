@@ -1,0 +1,11 @@
+# Ignore Terraform state files & downloaded binaries
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Ignore Python cached files
+__pycache__/
+*.pyc
+
+# Ignore local secret CSV files
+*.csv
