@@ -3,7 +3,7 @@ name: Backend CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - ignore-this-branch
 
 jobs:
   test-and-deploy:
