@@ -24,7 +24,7 @@ jobs:
     # 1. Sync website files to S3
     - name: Sync S3 Bucket
       run: |
-        aws s3 sync ./website s3://nitin-cloud-resume-bucket-2026 --delete
+        aws s3 sync ./website s3://nitin-cloud-resume-bucket-2026 --delete --exclude "terraform/*"
 
     # 2. Invalidate CloudFront Cache
     - name: Invalidate CloudFront Cache
