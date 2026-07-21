@@ -43,8 +43,20 @@ jobs:
       with:
         terraform_wrapper: false
 
-    # 6. Deploy Infrastructure via Terraform
-    - name: Terraform Init & Apply
+    # 6. Deploy Infrastructure via Terraform with S3 Debugging
+    - name: Debug S3 & Run Terraform
       run: |
+        echo "=== Checking AWS CLI Identity ==="
+        aws sts get-caller-identity
+
+        echo "=== Listing S3 State File directly ==="
+        aws s3 ls s3://nitin-cloud-resume-bucket-2026/terraform/state.tfstate || echo "CANNOT READ S3 STATE FILE!"
+
+        echo "=== Running Terraform Init ==="
         terraform init -reconfigure
-        terraform apply -auto-approve
+
+        echo "=== Checking Local State after Init ==="
+        terraform state list || echo "STATE IS EMPTY AFTER INIT!"
+
+        echo "=== Running Plan ==="
+        terraform plan
