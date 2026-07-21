@@ -111,7 +111,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   aliases = ["nitincloud.co.uk"]
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate_validation.cert.certificate_arn
+    acm_certificate_arn      = aws_acm_certificate.cert.arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
@@ -139,14 +139,14 @@ resource "aws_acm_certificate" "cert" {
 
 }
 
-resource "aws_route53_record" "cert_validation" {
+/*resource "aws_route53_record" "cert_validation" {
   for_each = {
     for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
     }
-  }
+  
 
   allow_overwrite = true
   name            = each.value.name
@@ -155,14 +155,14 @@ resource "aws_route53_record" "cert_validation" {
   type            = each.value.type
   zone_id         = aws_route53_zone.primary.zone_id
 
-}
+}*/
 
-resource "aws_acm_certificate_validation" "cert" {
+/*resource "aws_acm_certificate_validation" "cert" {
   provider                = aws.us-east-1
   certificate_arn         = aws_acm_certificate.cert.arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 
-}
+}*/
 
 resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.primary.zone_id
