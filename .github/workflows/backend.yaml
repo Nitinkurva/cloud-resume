@@ -5,8 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'backend/**'   # <-- ONLY run if files in the 'backend' folder or terraform change!
-      - 'terraform/**' 
+      - '*.tf'                          # <-- Watches main.tf (and any other .tf files) in the root
+      - 'lambda/**'                     # <-- Watches your Python Lambda code folder
+      - '.github/workflows/backend.yaml' # <-- Runs if you edit this workflow file
   workflow_dispatch:
 
 jobs:

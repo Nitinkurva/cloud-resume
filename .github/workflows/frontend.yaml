@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'frontend/**'
+      - 'website/**'
+      - '.github/workflows/frontend.yaml'
   workflow_dispatch:
 
 jobs:
