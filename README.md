@@ -3,7 +3,7 @@
 [![Frontend Deployment](https://github.com/Nitinkurva/cloud-resume/actions/workflows/frontend.yaml/badge.svg)](https://github.com/Nitinkurva/cloud-resume/actions/workflows/frontend.yaml)
 [![Backend Deployment](https://github.com/Nitinkurva/cloud-resume/actions/workflows/backend.yaml/badge.svg)](https://github.com/Nitinkurva/cloud-resume/actions/workflows/backend.yaml)
 
-> A production-grade, event-driven serverless portfolio hosted on AWS, fully provisioned via Infrastructure as Code (Terraform) and deployed with decoupled GitHub Actions CI/CD pipelines incorporating automated Python unit testing.
+> A serverless micro-service portfolio hosted on AWS, fully provisioned via Infrastructure as Code (Terraform) and deployed with decoupled GitHub Actions CI/CD pipelines incorporating automated Python unit testing.
 
 🌐 **Live Website:** [https://nitincloud.co.uk](https://nitincloud.co.uk)  
 📝 **Architecture Write-Up:** [Link to my future blog post]
@@ -38,14 +38,16 @@
 
 ---
 
-## 🛠️ Tech Stack & Tools
+## 🛠️ Key Skills & Technologies Demonstrated
 
-* **Cloud Services (AWS):** S3, CloudFront, API Gateway (HTTP API), Lambda, DynamoDB, ACM, Route 53
-* **Infrastructure as Code:** Terraform
-* **CI/CD & Automation:** GitHub Actions (Decoupled Workflows)
-* **Backend Language:** Python 3.x (`boto3`)
-* **Testing:** Python `unittest` with `unittest.mock`
-* **Frontend:** HTML5, CSS3, JavaScript (Fetch API)
+| Category | Demonstrated Skills & AWS Services |
+| :--- | :--- |
+| **Cloud Infrastructure (AWS)** | S3, CloudFront, Route 53, ACM, API Gateway (HTTP API), Lambda, DynamoDB |
+| **Infrastructure as Code (IaC)** | Terraform (Modules, S3 Remote State, Provider Pinning) |
+| **CI/CD & Automation** | GitHub Actions (Decoupled Workflows, Automated Testing Gates, Multi-OS Runners) |
+| **Backend & Testing** | Python 3.x (`boto3`), Unit Testing (`unittest`), Dependency Mocking (`unittest.mock`) |
+| **Networking & Security** | DNS Management (Route 53), Custom Domain TLS/HTTPS (ACM), CDN Edge Delivery (CloudFront OAC) |
+| **Frontend & Version Control** | HTML5, CSS3, JavaScript (Asynchronous Fetch API), Git, GitHub |
 
 ---
 
@@ -71,7 +73,7 @@ Before Terraform touches live AWS infrastructure, GitHub Actions runs `test_lamb
 
 ### 3. Declarative Infrastructure & State Hygiene
 * **Declarative Provisioning:** Infrastructure state is managed strictly via Terraform.
-* **Security & Secret Protection:** `.tfstate` files containing sensitive execution metadata are excluded from Git version control using `.gitignore` and managed securely.
+* **Security & Secret Protection:** Terraform state is stored remotely in an S3 backend with versioning enabled and excluded from Git using `.gitignore` to prevent accidental exposure of infrastructure metadata.
 
 ---
 
