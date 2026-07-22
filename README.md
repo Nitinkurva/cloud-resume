@@ -6,7 +6,9 @@
 > A serverless micro-service portfolio hosted on AWS, fully provisioned via Infrastructure as Code (Terraform) and deployed with decoupled GitHub Actions CI/CD pipelines incorporating automated Python unit testing.
 
 🌐 **Live Website:** [https://nitincloud.co.uk](https://nitincloud.co.uk)
+
 ![Live Website Preview](assets/website-preview.png)  
+
 📝 **Architecture Write-Up:** [Link to my future blog post]
 
 ---
@@ -72,6 +74,7 @@ Because this architecture is 100% serverless, operating costs fall entirely with
 To optimize deployment speed and isolate risk, the automation is split into two distinct GitHub Actions workflows:
 * **`frontend.yaml`:** Triggered only on changes within `website/**` or `.github/workflows/frontend.yaml`. Executes rapid `aws s3 sync` and invalidates CloudFront cache in ~10–15 seconds without running heavy infrastructure code.
 * **`backend.yaml`:** Triggered on changes to `*.tf` or `lambda/**` or `.github/workflows/backend.yaml`. Handles Python dependencies, executes unit testing gates, and runs `terraform init` / `terraform plan` / `terraform apply`.
+
 ![GitHub Actions Decoupled Pipelines](assets/github-actions.png)
 
 ### 2. Isolated Unit Testing Gates
@@ -90,7 +93,7 @@ To run the backend Python unit tests locally without modifying live AWS resource
     cd lambda
     python -m unittest test_lambda.py
 
-![Backend Unit Tests Passing](assets/terminal-tests.png)
+![Backend Unit Tests Passing](assets/terminl-tests.png)
 
 ---
 
