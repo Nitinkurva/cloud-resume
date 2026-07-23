@@ -31,11 +31,19 @@ resource "aws_s3_bucket_website_configuration" "website_config" {
 resource "aws_s3_bucket_public_access_block" "public_access" {
   bucket = aws_s3_bucket.my_first_bucket.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
+
+resource "aws_cloudfront_origin_access_control" "oac" {
+  name                              = "s3-cloudfront-oac"
+  description                       = "OAC for Cloud Resume S3 Bucket"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}  
 
 resource "aws_s3_bucket_policy" "allow_public_access" {
   bucket = aws_s3_bucket.my_first_bucket.id
@@ -46,18 +54,21 @@ resource "aws_s3_bucket_policy" "allow_public_access" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid       = "PublicReadGetObject"
+        Sid       = "AllowCloudFrontServicePrincipal"
         Effect    = "Allow"
-        Principal = "*"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
         Action    = "s3:GetObject"
         Resource  = "${aws_s3_bucket.my_first_bucket.arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+          }
+        }
       }
     ]
-    }
-
-  )
-
-
+  })
 }
 
 resource "aws_s3_object" "upload_index" {
@@ -78,6 +89,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = aws_s3_bucket.my_first_bucket.bucket_regional_domain_name
     origin_id   = "S3-${aws_s3_bucket.my_first_bucket.id}"
+    origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
   }
 
   enabled             = true
